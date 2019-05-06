@@ -1,0 +1,27 @@
+{
+  "name": "node-api",
+  "version": "1.0.0",
+  "description": "一个全栈项目，node.js写的后段接口",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RianMan/node-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RianMan/node-api/issues"
+  },
+  "homepage": "https://github.com/RianMan/node-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "mysql": "^2.17.1"
+  }
+}
