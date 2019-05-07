@@ -1,7 +1,7 @@
 module.exports ={
-    resultObj(data,statusCode){
+    resultObj(msg,statusCode,data=null){
         return {
-            data,statusCode
+            msg,data,statusCode
         }
     }
 }

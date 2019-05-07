@@ -12,6 +12,12 @@
 
 ## 项目模块
 1. 登录注册
+2. 利用JWT进行登陆状态的判断
+    - npm install jsonwebtoken
+    - 利用他的两个api
+        > let token = jwt.sign({'userId':userId}, 'userId',{expiresIn: 60});
+        > jwt.verify(token, 'userId',callback),
+    - 逻辑就是先利用他产生的一个token返回给前端，前端保存cookie，每次请求带上，后端那这个token去匹配，如果对的或者没过期，那么就让他走下面的逻辑。注意的是： 这个校验的逻辑一定要写在verify这个函数的回调里面，不然程序直接down掉！！！
 
 ## 项目目录介绍
 1. app.js为整个项目的入口
