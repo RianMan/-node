@@ -11,11 +11,7 @@ exports.login = (req,res) => {
     promise.then((data)=>{
         if(data.length > 0){
             const userId = data[0].id;
-            const iatTime = new Date().getTime();
-            const expTime = iatTime + 6000; 
-            console.log(expTime);
-            console.log(iatTime);
-            var token = jwt.sign({'userId':userId}, 'userId',{expiresIn: 60});
+            var token = jwt.sign({'userId':userId}, 'userId',{expiresIn: '24h'});
             res.send(resultObj('恭喜你，登陆成功',200,{token}))
         }else{
             res.send(resultObj('用户名和密码错误',500))
@@ -26,7 +22,7 @@ exports.login = (req,res) => {
 // 用户注册
 exports.register = (req,res) => {
     console.log(req.body)
-    let { nickname, password } = req.body;
+    let { nickname, password,department } = req.body;
     const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
     if(!nickname || !password){
         res.send(resultObj('注册失败，请输入用户名和密码',500));
@@ -41,10 +37,12 @@ exports.register = (req,res) => {
         if(data.length>0){
             res.send(resultObj('注册失败，该用户名已经被注册',500))
         }else{
-            let promise = request(userSql.registerSql,[nickname, password]);
-            promise.then((data)=>{
-                console.log(data)
+            let promise = request(userSql.registerSql,[nickname, password,department]);
+            promise.then(()=>{
                 res.send(resultObj('恭喜你，注册成功',200))
+            },(err)=>{
+                console.log(err);
+                res.send(resultObj('服务器错误',500))
             })
         }
     },()=>{
@@ -54,19 +52,10 @@ exports.register = (req,res) => {
 
 // 用户详情
 exports.detail = (req,res) => {
-    let token = req.get('Token');
-    jwt.verify(token, 'userId',function(err,decoded){
-        console.log(err);
-        if(err){
-            res.send(resultObj('登录状态已失效，请重新登录',401));
-        }else{
-            const { userId } = decoded
-            let promise = request(userSql.userDetail,[userId]);
-            promise.then((data)=>{
-                const userData = data[0];
-                res.send(resultObj('恭喜你，注册成功',200,{userData}));
-            })
-        }
-    });
+    let promise = request(userSql.userDetail,[req.userId]);
+        promise.then((data)=>{
+        const userData = data[0];
+        res.send(resultObj(null,200,{userData}));
+    })
     
 }
